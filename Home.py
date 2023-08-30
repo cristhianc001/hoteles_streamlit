@@ -1,7 +1,5 @@
 import streamlit as st
-import re
-import demoji
-import openai
+
 # import transformers
 # from transformers import pipeline
 
