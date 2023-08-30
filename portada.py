@@ -1,6 +1,8 @@
 import streamlit as st
 import transformers
 from transformers import pipeline
+from transformers import AutoModelForSequenceClassification, AutoTokenizer, pipeline
+
 
 st.image('https://d31uz8lwfmyn8g.cloudfront.net/Assets/logo-henry-white-lg.png')
 st.title('Introducción a Streamlit - Workshop')
@@ -8,18 +10,26 @@ st.markdown('***')
 
 st.sidebar.markdown('Introducción sobre los usos y ventajas de Streamlit')
 
-
 @st.cache
 def load_model():
-    zsc_mDeBERTa = pipeline("zero-shot-classification", model = "MoritzLaurer/mDeBERTa-v3-base-xnli-multilingual-nli-2mil7")
-    return zsc_mDeBERTa
-model = load_model()
+    model_name = "MoritzLaurer/mDeBERTa-v3-base-xnli-multilingual-nli-2mil7"
+    model = AutoModelForSequenceClassification.from_pretrained(model_name)
+    tokenizer = AutoTokenizer.from_pretrained(model_name)
+    return model, tokenizer
+
+model, tokenizer = load_model()
+
+@st.cache(allow_output_mutation=True)
+def create_classifier(model, tokenizer):
+    classifier = pipeline("zero-shot-classification", model=model, tokenizer=tokenizer)
+    return classifier
+
+classifier = create_classifier(model, tokenizer)
 
 candidate_labels = ["cleaning and bugs", "room and comfort", "staff and services", "food and drinks", "money"]
 
-
-def zero_shot_classification(text, candidate_labels, model):
-    results = model(text, candidate_labels)
+def zero_shot_classification(text, candidate_labels, classifier):
+    results = classifier(text, candidate_labels)
     predicted_labels = []
 
     # Obtener la etiqueta con el puntaje más alto
