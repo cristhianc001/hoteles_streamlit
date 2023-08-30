@@ -1,6 +1,6 @@
 import streamlit as st
 import transformers
-from transformers import pipeline
+from transformers import pipeline, tokenizers
 
 
 st.image('https://d31uz8lwfmyn8g.cloudfront.net/Assets/logo-henry-white-lg.png')
