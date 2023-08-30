@@ -10,7 +10,7 @@ st.markdown('***')
 st.sidebar.markdown('Introducción sobre los usos y ventajas de Streamlit')
 
 
-@st.cache(hash_funcs={pipeline: lambda _: None})
+@st.cache(hash_funcs={pipeline: lambda _: None, tokenizers.Tokenizer: lambda _: None})
 def load_model():
     zsc_mDeBERTa = pipeline("zero-shot-classification", model = "MoritzLaurer/mDeBERTa-v3-base-xnli-multilingual-nli-2mil7")
     return zsc_mDeBERTa
