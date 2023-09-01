@@ -6,18 +6,32 @@ from data import df
 import re
 import demoji
 import nltk
-from nltk.corpus import stopwords
 from nltk import word_tokenize
 
-nltk.download('stopwords') # DESCARGAR UNA VEZ
-nltk.download('punkt')
-
-@st.cache_data
-def get_stopwords():
-    stopwords_nltk = stopwords.words('english')
-    return stopwords_nltk
-
-stopwords_nltk = get_stopwords()
+stopwords_nltk = ['i', 'me', 'my', 'myself', 'we', 'our', 'ours', 'ourselves', 'you',
+       "you're", "you've", "you'll", "you'd", 'your', 'yours', 'yourself',
+       'yourselves', 'he', 'him', 'his', 'himself', 'she', "she's", 'her',
+       'hers', 'herself', 'it', "it's", 'its', 'itself', 'they', 'them',
+       'their', 'theirs', 'themselves', 'what', 'which', 'who', 'whom',
+       'this', 'that', "that'll", 'these', 'those', 'am', 'is', 'are',
+       'was', 'were', 'be', 'been', 'being', 'have', 'has', 'had',
+       'having', 'do', 'does', 'did', 'doing', 'a', 'an', 'the', 'and',
+       'but', 'if', 'or', 'because', 'as', 'until', 'while', 'of', 'at',
+       'by', 'for', 'with', 'about', 'against', 'between', 'into',
+       'through', 'during', 'before', 'after', 'above', 'below', 'to',
+       'from', 'up', 'down', 'in', 'out', 'on', 'off', 'over', 'under',
+       'again', 'further', 'then', 'once', 'here', 'there', 'when',
+       'where', 'why', 'how', 'all', 'any', 'both', 'each', 'few', 'more',
+       'most', 'other', 'some', 'such', 'no', 'nor', 'not', 'only', 'own',
+       'same', 'so', 'than', 'too', 'very', 's', 't', 'can', 'will',
+       'just', 'don', "don't", 'should', "should've", 'now', 'd', 'll',
+       'm', 'o', 're', 've', 'y', 'ain', 'aren', "aren't", 'couldn',
+       "couldn't", 'didn', "didn't", 'doesn', "doesn't", 'hadn', "hadn't",
+       'hasn', "hasn't", 'haven', "haven't", 'isn', "isn't", 'ma',
+       'mightn', "mightn't", 'mustn', "mustn't", 'needn', "needn't",
+       'shan', "shan't", 'shouldn', "shouldn't", 'wasn', "wasn't",
+       'weren', "weren't", 'won', "won't", 'wouldn', "wouldn't", 'hotel',
+       'positive', 'negative']
 
 def remove_stopwords(text):
   tokens = word_tokenize(text) # TOKENIZA EL TEXTO EN PALABRAS SINGULARES
@@ -63,8 +77,8 @@ opcion_seleccionada = st.selectbox("Selecciona una opción:", opciones)
 
 df_filtrado = df[df['lodging_name'] == opcion_seleccionada]
 
-df_filtrado['transformed'] = [remove_stopwords(x) for x in df_filtrado['review'] ]
-df_filtrado['transformed'] = [cleaning_text(x) for x in df_filtrado['transformed'] ]
+df_filtrado['cleaned'] = [cleaning_text(x) for x in df_filtrado['review'] ]
+df_filtrado['transformed'] = [remove_stopwords(x) for x in df_filtrado['cleaned'] ]
 text = ' '.join(df_filtrado['transformed'])
 wordcloud = WordCloud(width=800, height=400, background_color='white').generate(text)
 
@@ -73,5 +87,5 @@ st.image(wordcloud.to_array())
 
 # Mostrar las opiniones correspondientes al hotel seleccionado
 st.write("Opiniones para", opcion_seleccionada)
-st.write(df_filtrado['review'].tolist())
+st.write(df_filtrado['cleaned'].tolist())
 
