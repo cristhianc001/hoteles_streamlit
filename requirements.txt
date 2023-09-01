@@ -1,2 +1,6 @@
 demoji
 openai
+wordcloud
+matplotlib
+seaborn
+nltk
