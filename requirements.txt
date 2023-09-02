@@ -4,3 +4,5 @@ wordcloud
 matplotlib
 seaborn
 nltk
+pandas
+pyarrow
