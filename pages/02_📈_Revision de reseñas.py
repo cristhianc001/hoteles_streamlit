@@ -3,6 +3,9 @@ from wordcloud import WordCloud
 import matplotlib.pyplot as plt
 import pandas as pd
 
+st.title('Revision de reseñas')
+st.markdown('***')
+
 @st.cache_data
 def load_data():
     df = pd.read_parquet("data/df_transformed.parquet")

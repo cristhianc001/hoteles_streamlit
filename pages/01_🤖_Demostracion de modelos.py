@@ -4,6 +4,9 @@ import re
 import demoji
 import openai
 
+st.title('Demostración de clasificación de reseñas')
+st.markdown('***')
+
 openai.api_key = st.secrets["API_KEY"]
 
 def get_completion(prompt, model="gpt-3.5-turbo"):
@@ -47,9 +50,9 @@ input_text = st.text_input("Write a review:")
 if input_text:
     input_text = cleaning_text(input_text)
     resultado =  get_completion(
-        f""" 1. Give me the overall sentiment of the next review, the response can be 1 for positive, -1 for negative or 0 for neutral.
+        f""" 1. Give me the overall sentiment of the next review, the response can be pos for positive, neg for negative or neu for neutral.
             2. Give me the sentiment of the next categories of the review: room, guest service, cleaning and breakfast.
-            The response must be 1 for positive, -1 for negative or 0 neutral.
+            The response must be pos for positive, neg for negative or neu neutral.
             3. The output must be in JSON format and the keys must be 'overall_sentiment', 'room_sentiment', 'guest_service_sentiment','cleaning_sentiment' and 'breakfast_sentiment'.
             \ ```{input_text}``` """)
         

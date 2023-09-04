@@ -4,6 +4,9 @@ import folium
 from folium.plugins import MarkerCluster
 from streamlit_folium import folium_static
 
+st.title('Visualización Geografica')
+st.markdown('***')
+
 @st.cache_data
 def load_lodgings():
     df_lodgings = pd.read_parquet("data/df_lodgings.parquet")
@@ -12,9 +15,7 @@ def load_lodgings():
 df_lodgings = load_lodgings()
 
 # Lista de opciones para la lista desplegable
-opciones = ["Ramada Plaza by Wyndham Orlando Resort & Suites Intl Drive", "Ramada by Wyndham New York Times Square West",
-            "Ramada Plaza by Wyndham West Hollywood Hotel & Suites",  "Ramada by Wyndham Reno Hotel & Casino", 
-            "Ramada by Wyndham Houston Intercontinental Airport South", "Ramada by Wyndham Houston Intercontinental Airport East", "Nacional"]
+opciones = ["Nacional"]
 
 opcion_seleccionada = st.selectbox("Selecciona una opción:", opciones)
 
