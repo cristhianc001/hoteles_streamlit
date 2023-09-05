@@ -11,7 +11,7 @@ st.markdown('***')
 
 openai.api_key = st.secrets["API_KEY"]
 
-@st.cache_data
+@st.cache_resource
 def load_analyzer():
   nltk.download('vader_lexicon')
   return SentimentIntensityAnalyzer()
