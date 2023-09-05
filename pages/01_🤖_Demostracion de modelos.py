@@ -4,19 +4,19 @@ import re
 import demoji
 import openai
 import nltk
-from nltk.sentiment import SentimentIntensityAnalyzer
+from vaderSentiment.vaderSentiment import SentimentIntensityAnalyzer
 
 st.title('Demostración de clasificación de reseñas')
 st.markdown('***')
 
 openai.api_key = st.secrets["API_KEY"]
-analyzer = SentimentIntensityAnalyzer()
 
 @st.cache_data
-def load_lexicon():
-  return nltk.download('vader_lexicon')
+def load_analyzer():
+  nltk.download('vader_lexicon')
+  return SentimentIntensityAnalyzer()
 
-load_lexicon()
+analyzer = load_analyzer()
 
 def get_completion(prompt, model="gpt-3.5-turbo"):
     messages = [{"role": "user", "content": prompt}]

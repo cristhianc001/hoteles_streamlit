@@ -8,3 +8,4 @@ pandas
 pyarrow
 folium
 streamlit-folium
+vader-multi
