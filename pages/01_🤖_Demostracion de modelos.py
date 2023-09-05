@@ -3,11 +3,20 @@ import openai
 import re
 import demoji
 import openai
+import nltk
+from nltk.sentiment import SentimentIntensityAnalyzer
 
 st.title('Demostración de clasificación de reseñas')
 st.markdown('***')
 
 openai.api_key = st.secrets["API_KEY"]
+analyzer = SentimentIntensityAnalyzer()
+
+@st.cache_data
+def load_lexicon():
+  return nltk.download('vader_lexicon')
+
+load_lexicon()
 
 def get_completion(prompt, model="gpt-3.5-turbo"):
     messages = [{"role": "user", "content": prompt}]
@@ -43,12 +52,20 @@ def cleaning_text(text):
       return None
   return text
 
+def sentiment(text):
+  if not text: # SI EL TEXTO ESTA VACIO DESPUES DE LA LIMPIEZA, EL SCORE ES NEUTRO
+    return 0
+  else:   # SI NO ESTA VACIO, VADER LO CALCULA
+    scores = analyzer.polarity_scores(text)
+  return scores["compound"]
+
 # Crear un cuadro de texto y obtener el texto ingresado por el usuario
-input_text = st.text_input("Write a review:")
+input_text = st.text_input("Escribe una reseña en ingles:")
 
 # Verificar si el usuario ha ingresado texto y luego llamar a la función
 if input_text:
     input_text = cleaning_text(input_text)
+    score = sentiment(input_text)
     resultado =  get_completion(
         f""" 1. Give me the overall sentiment of the next review, the response can be pos for positive, neg for negative or neu for neutral.
             2. Give me the sentiment of the next categories of the review: room, guest service, cleaning and breakfast.
@@ -56,4 +73,6 @@ if input_text:
             3. The output must be in JSON format and the keys must be 'overall_sentiment', 'room_sentiment', 'guest_service_sentiment','cleaning_sentiment' and 'breakfast_sentiment'.
             \ ```{input_text}``` """)
         
-    st.write("Sentiment Analysis:", resultado)
+    st.write("Sentimiento por categoria:")
+    st.write(resultado)
+    st.write("Puntaje de sentimiento (VADER):", score)

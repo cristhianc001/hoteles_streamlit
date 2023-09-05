@@ -31,7 +31,7 @@ fecha_fin = st.sidebar.date_input("Fecha de Fin", min_value = fecha_minima, max_
 
 df_filtrado = df[(df['lodging_name'] == opcion_seleccionada) & (df['date'] >= fecha_inicio) & (df['date'] <= fecha_fin)]
 
-text = ' '.join(df_filtrado['transformed'])
+text = ' '.join(df_filtrado['stopwords_removed'])
 wordcloud = WordCloud(width=800, height=400, background_color='white').generate(text)
 
 # Mostrar la WordCloud
