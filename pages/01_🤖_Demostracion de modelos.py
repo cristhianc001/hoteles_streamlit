@@ -11,6 +11,7 @@ from vaderSentiment.vaderSentiment import SentimentIntensityAnalyzer
 ########### TITULO
 st.title('Demostración de clasificación de reseñas')
 st.markdown('***')
+st.sidebar.image("https://raw.githubusercontent.com/cristhianc001/hoteles_streamlit/main/img/icon.png",caption="Developed and Maintaned by: Latam Data Consultores")
 
 ########### VARIABLES Y FUNCIONES
 openai.api_key = st.secrets["API_KEY"]

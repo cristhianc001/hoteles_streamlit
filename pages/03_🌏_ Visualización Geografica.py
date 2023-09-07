@@ -9,6 +9,7 @@ from streamlit_folium import folium_static
 ########### TITULO
 st.title('Visualización Geografica')
 st.markdown('***')
+st.sidebar.image("https://raw.githubusercontent.com/cristhianc001/hoteles_streamlit/main/img/icon.png",caption="Developed and Maintaned by: Latam Data Consultores")
 
 ########### VARIABLES Y FUNCIONES
 @st.cache_data
