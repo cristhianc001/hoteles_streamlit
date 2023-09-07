@@ -1,12 +1,17 @@
+########### LIBRERIAS
+
 import streamlit as st
 import pandas as pd
 import folium
 from folium.plugins import MarkerCluster
 from streamlit_folium import folium_static
 
+########### TITULO
 st.title('Visualización Geografica')
 st.markdown('***')
+st.sidebar.markdown('Funcionalidades')
 
+########### VARIABLES Y FUNCIONES
 @st.cache_data
 def load_lodgings():
     df_lodgings = pd.read_parquet("data/df_lodgings.parquet")
@@ -17,6 +22,7 @@ df_lodgings = load_lodgings()
 # Lista de opciones para la lista desplegable
 opciones = ["Nacional"]
 
+########### CONTENIDO
 opcion_seleccionada = st.selectbox("Selecciona una opción:", opciones)
 
 if opcion_seleccionada == "Nacional":
