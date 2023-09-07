@@ -12,6 +12,10 @@ st.title('Revision de reseñas')
 st.markdown('***')
 
 ########### VARIABLES Y FUNCIONES
+# Lista de opciones para la lista desplegable
+opciones = ["Ramada Plaza by Wyndham Orlando Resort & Suites Intl Drive", "Ramada by Wyndham New York Times Square West",
+            "Ramada Plaza by Wyndham West Hollywood Hotel & Suites",  "Ramada by Wyndham Reno Hotel & Casino", 
+            "Ramada by Wyndham Houston Intercontinental Airport East"]
 
 @st.cache_data
 def load_data():
@@ -19,10 +23,11 @@ def load_data():
     return df
 df = load_data()
 
-# Lista de opciones para la lista desplegable
-opciones = ["Ramada Plaza by Wyndham Orlando Resort & Suites Intl Drive", "Ramada by Wyndham New York Times Square West",
-            "Ramada Plaza by Wyndham West Hollywood Hotel & Suites",  "Ramada by Wyndham Reno Hotel & Casino", 
-            "Ramada by Wyndham Houston Intercontinental Airport East"]
+@st.cache_resource
+def download_punkt():
+    nltk.download('punkt')
+
+download_punkt()
 
 def WC(df_wc):
     # tokenizando
