@@ -16,6 +16,12 @@ st.markdown('***')
 opciones = ["Ramada Plaza by Wyndham Orlando Resort & Suites Intl Drive", "Ramada by Wyndham New York Times Square West",
             "Ramada Plaza by Wyndham West Hollywood Hotel & Suites",  "Ramada by Wyndham Reno Hotel & Casino", 
             "Ramada by Wyndham Houston Intercontinental Airport East"]
+# Hotels de competencia
+lista_id_NV = [855,851]
+lista_id_FL = [1010,1062]
+lista_id_CA = [1164,1175,1653]
+lista_id_NY = [1328,1366,1356]
+lista_id_TX = [1521,1517]
 
 @st.cache_data
 def load_data():
@@ -67,22 +73,36 @@ elif opcion_categoria == "Desayuno":
 opcion_hotel = st.selectbox("Selecciona un hotel:", opciones)
 if opcion_hotel == "Ramada by Wyndham Reno Hotel & Casino":
     hotel = 811
+    lista_comp = lista_id_NV
 elif opcion_hotel == "Ramada Plaza by Wyndham Orlando Resort & Suites Intl Drive":
     hotel = 1076
+    lista_comp = lista_id_FL
 elif opcion_hotel == "Ramada Plaza by Wyndham West Hollywood Hotel & Suites":
     hotel = 1159
+    lista_comp = lista_id_CA
 elif opcion_hotel == "Ramada by Wyndham New York Times Square West":
     hotel = 1725
+    lista_comp = lista_id_NY
 elif opcion_hotel == "Ramada by Wyndham Houston Intercontinental Airport East":
     hotel = 1520
+    lista_comp = lista_id_TX
 
 if sentimiento is None:
     df_filtrado = df[(df['lodging_id'] == hotel)]
 else:
     df_filtrado = df[(df['lodging_id'] == hotel) & (df[categoria] == sentimiento)]
 
+if sentimiento is None:
+    df_filtrado_comp = df[df['lodging_id'].isin(lista_comp)]
+else:
+    df_filtrado_comp = df[(df['lodging_id'].isin(lista_comp)) & (df[categoria] == sentimiento)]
+
 # Mostrar la WordCloud
+st.write("Nube de palabras para la categoria: ", opcion_categoria , " con sentimientos: ", opcion_sentimiento , " para el hotel: ", opcion_hotel)
 st.image(WC(df_filtrado).to_array())
+
+st.write("Nube de palabras para la categoria: ", opcion_categoria , " con sentimientos: ", opcion_sentimiento , " para la competencia")
+st.image(WC(df_filtrado_comp).to_array())
 
 # Mostrar las opiniones correspondientes al hotel seleccionado
 reviews_filtradas = df_filtrado[df_filtrado[categoria] != 0]
