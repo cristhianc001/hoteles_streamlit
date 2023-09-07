@@ -9,7 +9,6 @@ from streamlit_folium import folium_static
 ########### TITULO
 st.title('Visualización Geografica')
 st.markdown('***')
-st.sidebar.markdown('Funcionalidades')
 
 ########### VARIABLES Y FUNCIONES
 @st.cache_data
@@ -58,5 +57,4 @@ if opcion_seleccionada == "Nacional":
     m_3.add_child(mc_unselected)
 
     st.markdown("### Mapa de hoteles")
-    st.write("Haga clic en los marcadores para obtener información.")
     folium_static(m_3)
