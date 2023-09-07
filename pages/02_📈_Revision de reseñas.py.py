@@ -116,5 +116,5 @@ st.markdown(f"Nube de palabras para la categoría: **{opcion_categoria}** con se
 st.image(WC(df_filtrado_comp).to_array())
 
 # Mostrar las opiniones correspondientes al hotel seleccionado
-st.write("Opiniones para", opcion_hotel)
+st.markdown(f"Opiniones para: ***{opcion_hotel}***")
 st.write(df_filtrado['review'].tolist())
