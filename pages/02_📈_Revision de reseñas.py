@@ -108,13 +108,13 @@ else:
     df_filtrado_comp = df[(df['lodging_id'].isin(lista_comp)) & (df[categoria] == sentimiento)  & (df['date'] >= fecha_inicio) & (df['date'] <= fecha_fin)]
 
 # Mostrar la WordCloud
+st.write(len(df_filtrado) / len(df[(df['lodging_id'] == hotel) & (df['date'] >= fecha_inicio) & (df['date'] <= fecha_fin)]))
 st.markdown(f"Nube de palabras para la categoría: **{opcion_categoria}** con sentimientos: **{opcion_sentimiento}** para el hotel: ***{opcion_hotel}***")
 st.image(WC(df_filtrado).to_array())
-st.write(len(df_filtrado) / len(df[(df['lodging_id'] == hotel) & (df['date'] >= fecha_inicio) & (df['date'] <= fecha_fin)]))
 
+st.write(len(df_filtrado_comp) / len(df[(df['lodging_id'].isin(lista_comp)) & (df['date'] >= fecha_inicio) & (df['date'] <= fecha_fin)]))
 st.markdown(f"Nube de palabras para la categoría: **{opcion_categoria}** con sentimientos: **{opcion_sentimiento}** para la ***competencia***")
 st.image(WC(df_filtrado_comp).to_array())
-st.write(len(df_filtrado_comp) / len(df[(df['lodging_id'].isin(lista_comp)) & (df['date'] >= fecha_inicio) & (df['date'] <= fecha_fin)]))
 
 # Mostrar las opiniones correspondientes al hotel seleccionado
 st.markdown(f"Opiniones para: ***{opcion_hotel}***")
