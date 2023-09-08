@@ -54,7 +54,7 @@ def WC(df_wc):
 
 ########### CONTENIDO
 # Agregar filtros de fecha
-st.sidebar.header("Filtros de Fecha")
+# st.sidebar.header("Filtros de Fecha")
 fecha_minima = pd.to_datetime(min(df["date"]))
 fecha_maxima = pd.to_datetime(max(df["date"]))
 
@@ -67,7 +67,6 @@ if opcion_sentimiento == "Positivo":
 elif opcion_sentimiento == "Negativo":
     sentimiento = -1
 
-
 opcion_categoria = st.sidebar.radio("Seleccione una categoria:", ["Habitación", "Atención al cliente", "Limpieza", "Desayuno"])
 if opcion_categoria == "Habitación":
     categoria = "room_sentiment"
@@ -77,7 +76,6 @@ elif opcion_categoria == "Limpieza":
     categoria = "cleaning_sentiment"
 elif opcion_categoria == "Desayuno":
     categoria = "breakfast_sentiment"
-
 
 # Crear una lista desplegable en la aplicación
 opcion_hotel = st.selectbox("Selecciona un hotel:", opciones)
@@ -102,6 +100,7 @@ if sentimiento is None: # ESTO ES PARA LA OPCION "TODOS" PERO SE ELIMINÓ
     df_filtrado = df[(df['lodging_id'] == hotel) & (df['date'] >= fecha_inicio) & (df['date'] <= fecha_fin)]
 else:
     df_filtrado = df[(df['lodging_id'] == hotel) & (df[categoria] == sentimiento)  & (df['date'] >= fecha_inicio) & (df['date'] <= fecha_fin)]
+
 # Hoteles de la competencia
 if sentimiento is None:
     df_filtrado_comp = df[df['lodging_id'].isin(lista_comp)  & (df['date'] >= fecha_inicio) & (df['date'] <= fecha_fin)]
@@ -111,9 +110,11 @@ else:
 # Mostrar la WordCloud
 st.markdown(f"Nube de palabras para la categoría: **{opcion_categoria}** con sentimientos: **{opcion_sentimiento}** para el hotel: ***{opcion_hotel}***")
 st.image(WC(df_filtrado).to_array())
+st.write(len(df_filtrado) / len(df[(df['lodging_id'] == hotel) & (df['date'] >= fecha_inicio) & (df['date'] <= fecha_fin)]))
 
 st.markdown(f"Nube de palabras para la categoría: **{opcion_categoria}** con sentimientos: **{opcion_sentimiento}** para la ***competencia***")
 st.image(WC(df_filtrado_comp).to_array())
+st.write(len(df_filtrado_comp) / len(df[(df['lodging_id'].isin(lista_comp)) & (df['date'] >= fecha_inicio) & (df['date'] <= fecha_fin)]))
 
 # Mostrar las opiniones correspondientes al hotel seleccionado
 st.markdown(f"Opiniones para: ***{opcion_hotel}***")
