@@ -61,13 +61,12 @@ fecha_maxima = pd.to_datetime(max(df["date"]))
 fecha_inicio = st.sidebar.date_input("Fecha de Inicio", min_value = fecha_minima, max_value = fecha_maxima, value=fecha_minima)
 fecha_fin = st.sidebar.date_input("Fecha de Fin", min_value = fecha_minima, max_value = fecha_maxima, value=fecha_maxima)
 
-opcion_sentimiento = st.sidebar.radio("Seleccione una opcion de sentimiento:", ["Positivo", "Negativo", "Total"])
+opcion_sentimiento = st.sidebar.radio("Seleccione una opcion de sentimiento:", ["Positivo", "Negativo"])
 if opcion_sentimiento == "Positivo":
     sentimiento = 1
 elif opcion_sentimiento == "Negativo":
     sentimiento = -1
-elif opcion_sentimiento == "Total":
-    sentimiento = None
+
 
 opcion_categoria = st.sidebar.radio("Seleccione una categoria:", ["Habitación", "Atención al cliente", "Limpieza", "Desayuno"])
 if opcion_categoria == "Habitación":
@@ -99,7 +98,7 @@ elif opcion_hotel == "Ramada by Wyndham Houston Intercontinental Airport East":
     lista_comp = lista_id_TX
 
 # Hoteles de Ramada
-if sentimiento is None:
+if sentimiento is None: # ESTO ES PARA LA OPCION "TODOS" PERO SE ELIMINÓ
     df_filtrado = df[(df['lodging_id'] == hotel) & (df['date'] >= fecha_inicio) & (df['date'] <= fecha_fin)]
 else:
     df_filtrado = df[(df['lodging_id'] == hotel) & (df[categoria] == sentimiento)  & (df['date'] >= fecha_inicio) & (df['date'] <= fecha_fin)]
