@@ -9,3 +9,5 @@ st.markdown("***Data Analyst***: [Douglas Sanchez](https://www.linkedin.com/in/d
 st.markdown("***Data Engineers***: [Yaneth Ramirez]( https://www.linkedin.com/in/yanethramirez/), [Hugo Salazar](https://www.linkedin.com/in/hasalazars/)")
 
 st.markdown("***Data Scientists***: [Cristhian Castro](https://www.linkedin.com/in/cristhiancastro/), [Rodrigo Moreira](https://www.linkedin.com/in/rcmoreg)")
+
+st.markdown("***Repositorio del Proyecto***: [Github](https://github.com/cristhianc001/Analisis-Sentimientos-Hoteles)")
