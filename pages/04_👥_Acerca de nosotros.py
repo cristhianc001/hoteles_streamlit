@@ -3,7 +3,10 @@ import streamlit as st
 st.title('Acerca de nosotros')
 st.sidebar.image("https://raw.githubusercontent.com/cristhianc001/hoteles_streamlit/main/img/icon.png",caption="Developed and Maintained by: Latam Data Consultores")
 
-st.image('https://raw.githubusercontent.com/cristhianc001/hoteles_streamlit/main/img/team.png')
+@st.cache_resource
+def load_image():
+    return st.image('https://raw.githubusercontent.com/cristhianc001/hoteles_streamlit/main/img/team.png')
+load_image()
 
 st.info("""
         ***Data Analyst***: [Douglas Sanchez](https://www.linkedin.com/in/douglassanchezcasanova/)
