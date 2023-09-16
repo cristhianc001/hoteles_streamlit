@@ -10,7 +10,7 @@ from datetime import datetime
 ########### TITULO
 st.title('Revision de reseñas')
 st.markdown('***')
-st.sidebar.image("https://raw.githubusercontent.com/cristhianc001/hoteles_streamlit/main/img/icon.png",caption="Developed and Maintaned by: Latam Data Consultores")
+st.sidebar.image("https://raw.githubusercontent.com/cristhianc001/hoteles_streamlit/main/img/icon.png",caption="Developed and Maintained by: Latam Data Consultores")
 
 ########### VARIABLES Y FUNCIONES
 # Lista de opciones para la lista desplegable
@@ -109,21 +109,21 @@ else:
 
 # Mostrar la WordCloud
 kpi_cliente = round((len(df_filtrado) / len(df[(df['lodging_id'] == hotel) & (df['date'] >= fecha_inicio) & (df['date'] <= fecha_fin)])*100), 2)
-st.markdown(f"Porcentaje de reviews para la categoria: **{opcion_categoria}** con sentimiento: **{opcion_sentimiento}** para el hotel ***{opcion_hotel}***: **{kpi_cliente}%**")
+st.success(f"Porcentaje de reviews para la categoria: **{opcion_categoria}** con sentimiento: **{opcion_sentimiento}** para el hotel ***{opcion_hotel}***: **{kpi_cliente}%**")
 
-st.markdown(f"Nube de palabras para la categoría: **{opcion_categoria}** con sentimiento: **{opcion_sentimiento}** para el hotel ***{opcion_hotel}***")
+st.success(f"Nube de palabras para la categoría: **{opcion_categoria}** con sentimiento: **{opcion_sentimiento}** para el hotel ***{opcion_hotel}***")
 st.image(WC(df_filtrado).to_array())
 
 st.markdown('***')
 
 kpi_comp = round((len(df_filtrado_comp) / len(df[(df['lodging_id'].isin(lista_comp)) & (df['date'] >= fecha_inicio) & (df['date'] <= fecha_fin)])*100),2)
-st.markdown(f"Porcentaje de reviews para la categoria: **{opcion_categoria}** con sentimiento: **{opcion_sentimiento}** para la ***competencia***: **{kpi_comp}%**")
+st.success(f"Porcentaje de reviews para la categoria: **{opcion_categoria}** con sentimiento: **{opcion_sentimiento}** para la ***competencia***: **{kpi_comp}%**")
 
-st.markdown(f"Nube de palabras para la categoría: **{opcion_categoria}** con sentimientos: **{opcion_sentimiento}** para la ***competencia***")
+st.success(f"Nube de palabras para la categoría: **{opcion_categoria}** con sentimientos: **{opcion_sentimiento}** para la ***competencia***")
 st.image(WC(df_filtrado_comp).to_array())
 
 st.markdown('***')
 
 # Mostrar las opiniones correspondientes al hotel seleccionado
-st.markdown(f"Opiniones para: ***{opcion_hotel}***")
+st.info(f"Opiniones para: ***{opcion_hotel}***")
 st.write(df_filtrado['review'].tolist())

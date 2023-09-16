@@ -85,9 +85,13 @@ st.markdown("""El funcionamiento de los modelos de clasificación y analisis de 
 st.write("""El resultado de sentimiento por categoria se divide por 'pos' siendo positivo, 'neu' neutral y 'neg' negativo. 
             Ademas de su categorización por servicios del hotel: estado de la habitación, atención al cliente, limpieza y desayuno.
             """)
+random_index = random.randint(0, len(df) - 1)
+random_review = df.loc[random_index, "review"]
+st.markdown("***Reseña Aleatoria***:")
+st.info(random_review)
 
 # Crear un cuadro de texto y obtener el texto ingresado por el usuario
-input_text = st.text_input("Escribe una reseña aqui:")
+input_text = st.text_input("Escribe una reseña aqui o prueba la aleatoria:")
 
 # Verificar si el usuario ha ingresado texto y luego llamar a la función
 if input_text:
@@ -102,13 +106,19 @@ if input_text:
       
     resultado = ast.literal_eval(resultado)
     df = pd.DataFrame([resultado])
-    st.markdown("### Sentimiento por categoria:")
+    st.success("### Sentimiento por categoria")
     st.dataframe(df)
-    
-    st.markdown(f"### Puntaje de sentimiento: {score}")
-    st.write("""El puntaje de sentimiento tiene un rango entre -1 y 1, siendo -1 muy negativo y 1 muy positivo, con una zona neutral
+     
+    st.success(f"### Puntaje de sentimiento: {score}")
+    st.markdown(f"""El puntaje de sentimiento tiene un rango entre -1 y 1, siendo -1 muy negativo y 1 muy positivo, con una zona neutral
              entre -0.05 y 0.05. Para el puntaje anteriormente hallado, el sentimiento es: 
-            """, sentiment(score))
+            *{sentiment(score)}* """)
     
 st.markdown('***')
-st.markdown("La clasificación de reseñas se ejecuta por medio del modelo [GPT 3.5 Turbo](https://openai.com/blog/gpt-3-5-turbo-fine-tuning-and-api-updates), mientras que el puntaje de sentimiento usa [VADER multilenguaje](https://github.com/brunneis/vader-multi) para su calculo.")
+st.markdown(
+    """<div style='background-color: purple; padding: 10px; color: white; border-radius: 10px;'>
+       La clasificación de reseñas se ejecuta por medio del modelo <a href='https://openai.com/blog/gpt-3-5-turbo-fine-tuning-and-api-updates' style='color: white;'>GPT 3.5 Turbo</a>,
+       mientras que el puntaje de sentimiento usa <a href='https://github.com/brunneis/vader-multi' style='color: white;'>VADER multilenguaje</a> para su cálculo.
+       </div>""",
+    unsafe_allow_html=True
+)
