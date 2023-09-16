@@ -124,5 +124,16 @@ if input_text:
     st.markdown(f"""El puntaje de sentimiento tiene un rango entre -1 y 1, siendo -1 muy negativo y 1 muy positivo, con una zona neutral
              entre -0.05 y 0.05. Para el puntaje anteriormente hallado, el sentimiento es: 
             *{sentiment(score)}* """)
+  
+
+css = '''
+<style>
+    [data-testid='stSidebarNav'] > ul {
+        min-height: 45vh;
+    }
+</style>
+'''
+
+st.markdown(css, unsafe_allow_html=True)
     
 

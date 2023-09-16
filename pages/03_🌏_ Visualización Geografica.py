@@ -9,7 +9,7 @@ from streamlit_folium import folium_static
 ########### TITULO
 st.title('Visualización Geografica')
 st.markdown('***')
-st.sidebar.image("https://raw.githubusercontent.com/cristhianc001/hoteles_streamlit/main/img/icon.png",caption="Developed and Maintaned by: Latam Data Consultores")
+st.sidebar.image("https://raw.githubusercontent.com/cristhianc001/hoteles_streamlit/main/img/icon.png",caption="Developed and Maintained by: Latam Data Consultores")
 
 ########### VARIABLES Y FUNCIONES
 @st.cache_data
@@ -112,5 +112,15 @@ df_filtrado = df_lodgings[df_lodgings['lodging_id'].isin(hoteles)]
 df = df_filtrado.merge(df_grouped, on=["lodging_id", "lodging_name"])
 
 map(df, 4)
+
+css = '''
+<style>
+    [data-testid='stSidebarNav'] > ul {
+        min-height: 45vh;
+    }
+</style>
+'''
+
+st.markdown(css, unsafe_allow_html=True)
 
 

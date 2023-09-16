@@ -9,3 +9,13 @@ st.markdown('***')
 # st.image('https://raw.githubusercontent.com/cristhianc001/hoteles_streamlit/main/img/ramada_logo.png')
 st.video("https://www.youtube.com/watch?v=t-39RZ5zcLo")
 
+# PARA VER TODAS LAS TABS DE LA IZQUIERDA, ENTRE MAS vh MAS AMPLIO ES
+css = '''
+<style>
+    [data-testid='stSidebarNav'] > ul {
+        min-height: 45vh;
+    }
+</style>
+'''
+
+st.markdown(css, unsafe_allow_html=True)

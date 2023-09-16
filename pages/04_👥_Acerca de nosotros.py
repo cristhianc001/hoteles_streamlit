@@ -15,3 +15,14 @@ st.info("""
         ***Repositorio del Proyecto***: [Github](https://github.com/cristhianc001/Analisis-Sentimientos-Hoteles)
 
         """)
+
+
+css = '''
+<style>
+    [data-testid='stSidebarNav'] > ul {
+        min-height: 45vh;
+    }
+</style>
+'''
+
+st.markdown(css, unsafe_allow_html=True)

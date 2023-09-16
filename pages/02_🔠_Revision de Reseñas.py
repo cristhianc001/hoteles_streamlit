@@ -127,3 +127,13 @@ st.markdown('***')
 # Mostrar las opiniones correspondientes al hotel seleccionado
 st.info(f"Opiniones para: ***{opcion_hotel}***")
 st.write(df_filtrado['review'].tolist())
+
+css = '''
+<style>
+    [data-testid='stSidebarNav'] > ul {
+        min-height: 45vh;
+    }
+</style>
+'''
+
+st.markdown(css, unsafe_allow_html=True)
