@@ -86,12 +86,6 @@ st.write("""El resultado de sentimiento por categoria se divide por 'pos' siendo
             Ademas de su categorización por servicios del hotel: estado de la habitación, atención al cliente, limpieza y desayuno.
             """)
 
-if st.button("Obtener Reseña Aleatoria"):
-    random_index = random.randint(0, len(df) - 1)
-    random_review = df.loc[random_index, "review"]
-    st.markdown("***Reseña Aleatoria***:")
-    st.markdown(f"*{random_review}*")
-
 # Crear un cuadro de texto y obtener el texto ingresado por el usuario
 input_text = st.text_input("Escribe una reseña aqui:")
 
