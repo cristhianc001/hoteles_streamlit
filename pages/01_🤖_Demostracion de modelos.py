@@ -85,6 +85,17 @@ st.markdown("""El funcionamiento de los modelos de clasificación y analisis de 
 st.write("""El resultado de sentimiento por categoria se divide por 'pos' siendo positivo, 'neu' neutral y 'neg' negativo. 
             Ademas de su categorización por servicios del hotel: estado de la habitación, atención al cliente, limpieza y desayuno.
             """)
+
+st.markdown(
+    """<div style='background-color: purple; padding: 10px; color: white; border-radius: 10px;'>
+       La clasificación de reseñas se ejecuta por medio del modelo <a href='https://openai.com/blog/gpt-3-5-turbo-fine-tuning-and-api-updates' style='color: white;'>GPT 3.5 Turbo</a>,
+       mientras que el puntaje de sentimiento usa <a href='https://github.com/brunneis/vader-multi' style='color: white;'>VADER multilenguaje</a> para su cálculo.
+       </div>""",
+    unsafe_allow_html=True
+)
+
+st.markdown('***')
+
 random_index = random.randint(0, len(df) - 1)
 random_review = df.loc[random_index, "review"]
 st.markdown("***Reseña Aleatoria***:")
@@ -114,11 +125,4 @@ if input_text:
              entre -0.05 y 0.05. Para el puntaje anteriormente hallado, el sentimiento es: 
             *{sentiment(score)}* """)
     
-st.markdown('***')
-st.markdown(
-    """<div style='background-color: purple; padding: 10px; color: white; border-radius: 10px;'>
-       La clasificación de reseñas se ejecuta por medio del modelo <a href='https://openai.com/blog/gpt-3-5-turbo-fine-tuning-and-api-updates' style='color: white;'>GPT 3.5 Turbo</a>,
-       mientras que el puntaje de sentimiento usa <a href='https://github.com/brunneis/vader-multi' style='color: white;'>VADER multilenguaje</a> para su cálculo.
-       </div>""",
-    unsafe_allow_html=True
-)
+
