@@ -1,9 +1,11 @@
 ########### LIBRERIAS
 import pandas as pd
 import ast
+import random
 import streamlit as st
 import openai
 import re
+import time
 import demoji
 import openai
 from vaderSentiment.vaderSentiment import SentimentIntensityAnalyzer
@@ -11,10 +13,16 @@ from vaderSentiment.vaderSentiment import SentimentIntensityAnalyzer
 ########### TITULO
 st.title('Demostración de clasificación de reseñas')
 st.markdown('***')
-st.sidebar.image("https://raw.githubusercontent.com/cristhianc001/hoteles_streamlit/main/img/icon.png",caption="Developed and Maintaned by: Latam Data Consultores")
+st.sidebar.image("https://raw.githubusercontent.com/cristhianc001/hoteles_streamlit/main/img/icon.png",caption="Developed and Maintained by: Latam Data Consultores")
 
 ########### VARIABLES Y FUNCIONES
 openai.api_key = st.secrets["API_KEY"]
+
+@st.cache_data
+def load_data():
+    df = pd.read_parquet("data/reviews-model.parquet")
+    return df
+df = load_data()
 
 @st.cache_resource
 def load_analyzer():
@@ -22,14 +30,18 @@ def load_analyzer():
 
 analyzer = load_analyzer()
 
+@st.cache_resource
 def get_completion(prompt, model="gpt-3.5-turbo"):
-    messages = [{"role": "user", "content": prompt}]
-    response = openai.ChatCompletion.create(
-        model=model,
-        messages=messages,
-        temperature=0, # this is the degree of randomness of the model's output
-    )
-    return response.choices[0].message["content"]
+    try:
+      messages = [{"role": "user", "content": prompt}]
+      response = openai.ChatCompletion.create(
+          model=model,
+          messages=messages,
+          temperature=0, # this is the degree of randomness of the model's output
+      )
+      return response.choices[0].message["content"]
+    except openai.error.RateLimitError as e:      
+        return st.error("Limite excedido. Intente de nuevo más tarde.")
 
 def cleaning_text(text):
 # TRATAR TRADUCCIONES EN REVIEWS, BORRA EL STRING "(ORIGINAL)" Y EL RESTO A SU DERECHA
@@ -70,6 +82,16 @@ def sentiment(score):
 st.markdown("""El funcionamiento de los modelos de clasificación y analisis de sentimiento pueden ser probados
          por medio de reseñas individuales introducidas en el cuadro de texto a continuación.""")
 
+st.write("""El resultado de sentimiento por categoria se divide por 'pos' siendo positivo, 'neu' neutral y 'neg' negativo. 
+            Ademas de su categorización por servicios del hotel: estado de la habitación, atención al cliente, limpieza y desayuno.
+            """)
+
+if st.button("Obtener Reseña Aleatoria"):
+    random_index = random.randint(0, len(df) - 1)
+    random_review = df.loc[random_index, "review"]
+    st.markdown("***Reseña Aleatoria***:")
+    st.markdown(f"*{random_review}*")
+
 # Crear un cuadro de texto y obtener el texto ingresado por el usuario
 input_text = st.text_input("Escribe una reseña aqui:")
 
@@ -83,15 +105,12 @@ if input_text:
             The response must be pos for positive, neg for negative or neu neutral.
             3. The output must be in JSON format and the keys must be 'overall_sentiment', 'room_sentiment', 'guest_service_sentiment','cleaning_sentiment' and 'breakfast_sentiment'.
             \ ```{input_text}``` """)
-    
+      
     resultado = ast.literal_eval(resultado)
     df = pd.DataFrame([resultado])
     st.markdown("### Sentimiento por categoria:")
     st.dataframe(df)
-    st.write("""El resultado de sentimiento por categoria se divide por 'pos' siendo positivo, 'neu' neutral y 'neg' negativo. 
-            Ademas de su categorización por servicios del hotel: estado de la habitación, atención al cliente, limpieza y desayuno.
-            """)
-
+    
     st.markdown(f"### Puntaje de sentimiento: {score}")
     st.write("""El puntaje de sentimiento tiene un rango entre -1 y 1, siendo -1 muy negativo y 1 muy positivo, con una zona neutral
              entre -0.05 y 0.05. Para el puntaje anteriormente hallado, el sentimiento es: 
