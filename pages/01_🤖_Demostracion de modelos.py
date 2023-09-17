@@ -80,7 +80,7 @@ def sentiment(score):
 ########### CONTENIDO
 
 st.markdown("""El funcionamiento de los modelos de clasificación y analisis de sentimiento pueden ser probados
-         por medio de reseñas individuales introducidas en el cuadro de texto a continuación.""")
+         por medio de reseñas individuales introducidas en el cuadro de texto al final de la página.""")
 
 st.write("""El resultado de sentimiento por categoria se divide por 'pos' siendo positivo, 'neu' neutral y 'neg' negativo. 
             Ademas de su categorización por servicios del hotel: estado de la habitación, atención al cliente, limpieza y desayuno.

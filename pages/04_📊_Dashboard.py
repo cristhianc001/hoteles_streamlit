@@ -1,6 +1,8 @@
 import streamlit as st
 
 st.title('Dashboard de Power BI')
+st.markdown('***')
+st.sidebar.image("https://raw.githubusercontent.com/cristhianc001/hoteles_streamlit/main/img/icon.png",caption="Developed and Maintained by: Latam Data Consultores")
 
 @st.cache_resource
 def load_dashboard():
@@ -10,3 +12,13 @@ def load_dashboard():
     return st.markdown(iframe_code, unsafe_allow_html=True)
 
 load_dashboard()
+
+css = '''
+<style>
+    [data-testid='stSidebarNav'] > ul {
+        min-height: 45vh;
+    }
+</style>
+'''
+
+st.markdown(css, unsafe_allow_html=True)
