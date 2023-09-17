@@ -64,29 +64,6 @@ df_merged = data_merge(df_reviews, df_lodgings, "lodging_id")
 df_perc_pos = percentage_pos(df_merged)
 df_perc_neg = percentage_neg(df_merged)
 df_grouped = data_grouped(df_merged, df_perc_pos, df_perc_neg)
-# reviews_pos = df_merged[df_merged['rating'] > 3]
-# reviews_neg = df_merged[df_merged['rating'] < 3]
-
-# perc_pos = reviews_pos.groupby(["lodging_id", "lodging_name"])['rating'].count() / df_merged.groupby(["lodging_id", "lodging_name"])['rating'].count() * 100
-# perc_neg = reviews_neg.groupby(["lodging_id", "lodging_name"])['rating'].count() / df_merged.groupby(["lodging_id", "lodging_name"])['rating'].count() * 100
-
-# df_perc_pos = pd.DataFrame({'perc_pos': perc_pos})
-# df_perc_neg = pd.DataFrame({'perc_neg': perc_neg})
-
-# df_perc_pos = df_perc_pos.reset_index()
-# df_perc_neg = df_perc_neg.reset_index()
-
-# df_grouped = df_merged.groupby(["lodging_id", "lodging_name"]).agg(
-#     avg_rating=("rating", "mean"),
-#     avg_sentiment=("sentiment_score", "mean")
-# ).reset_index()
-
-# df_grouped = df_grouped.merge(df_perc_pos, on=["lodging_id", "lodging_name"]).merge(df_perc_neg, on=["lodging_id", "lodging_name"])
-
-# df_grouped["avg_rating"] = df_grouped["avg_rating"].round(3)
-# df_grouped["avg_sentiment"] = df_grouped["avg_sentiment"].round(3)
-# df_grouped["perc_pos"] = df_grouped["perc_pos"].round(3)
-# df_grouped["perc_neg"] = df_grouped["perc_neg"].round(3)
 
 # Hotels de competencia
 lista_id_NV = [811,855,851]
