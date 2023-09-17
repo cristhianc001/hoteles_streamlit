@@ -14,29 +14,78 @@ st.sidebar.image("https://raw.githubusercontent.com/cristhianc001/hoteles_stream
 ########### VARIABLES Y FUNCIONES
 @st.cache_data
 def load_lodgings():
-    df_lodgings = pd.read_parquet("data/df_lodgings.parquet")
+    df_lodgings = pd.read_parquet("data/df_lodgings.parquet") # cargar df de hoteles
     return df_lodgings
+
 @st.cache_data
 def load_reviews():
-    df_reviews = pd.read_parquet("data/reviews-model.parquet")
+    df_reviews = pd.read_parquet("data/reviews-model.parquet") # cargar df de reseñas
     return df_reviews
+
 @st.cache_data
-def data_merge(df1, df2, column):
+def data_merge(df1, df2, column): # merge df de hoteles y reseñas
     df_merged = df1.merge(df2, on=column)
     return df_merged
 
+@st.cache_data
+def percentage_pos(df): # cargar df con porcentaje de reviews positivas por hotel
+    reviews_pos = df[df['rating'] > 3]
+    perc_pos = reviews_pos.groupby(["lodging_id", "lodging_name"])['rating'].count() / df.groupby(["lodging_id", "lodging_name"])['rating'].count() * 100
+    df_perc_pos = pd.DataFrame({'perc_pos': perc_pos})
+    df_perc_pos = df_perc_pos.reset_index()
+    return df_perc_pos
+
+@st.cache_data
+def percentage_neg(df): # cargar df con porcentaje de reviews negativas por hotel
+    reviews_neg = df[df['rating'] < 3]
+    perc_neg = reviews_neg.groupby(["lodging_id", "lodging_name"])['rating'].count() / df.groupby(["lodging_id", "lodging_name"])['rating'].count() * 100
+    df_perc_neg = pd.DataFrame({'perc_neg': perc_neg})
+    df_perc_neg = df_perc_neg.reset_index()
+    return df_perc_neg
+
+@st.cache_data
+def data_grouped(df, df1, df2):  # agrupar df para calcular promedio de rating y sentimiento por hotel, luego merge con los df de porcentaje
+    df_grouped = df.groupby(["lodging_id", "lodging_name"]).agg(
+    avg_rating=("rating", "mean"),
+    avg_sentiment=("sentiment_score", "mean")
+    ).reset_index()
+    
+    df_grouped = df_grouped.merge(df1, on=["lodging_id", "lodging_name"]).merge(df2, on=["lodging_id", "lodging_name"])
+    df_grouped["avg_rating"] = df_grouped["avg_rating"].round(3)
+    df_grouped["avg_sentiment"] = df_grouped["avg_sentiment"].round(3)
+    df_grouped["perc_pos"] = df_grouped["perc_pos"].round(3)
+    df_grouped["perc_neg"] = df_grouped["perc_neg"].round(3)
+    return df_grouped
+    
 df_lodgings = load_lodgings()
 df_reviews = load_reviews()
 df_merged = data_merge(df_reviews, df_lodgings, "lodging_id")
+df_perc_pos = percentage_pos(df_merged)
+df_perc_neg = percentage_neg(df_merged)
+df_grouped = data_grouped(df_merged, df_perc_pos, df_perc_neg)
+# reviews_pos = df_merged[df_merged['rating'] > 3]
+# reviews_neg = df_merged[df_merged['rating'] < 3]
 
-df_grouped = df_merged.groupby(["lodging_id", "lodging_name"]).agg(
-    avg_rating=("rating", "mean"),
-    avg_sentiment=("sentiment_score", "mean")
-).reset_index()
+# perc_pos = reviews_pos.groupby(["lodging_id", "lodging_name"])['rating'].count() / df_merged.groupby(["lodging_id", "lodging_name"])['rating'].count() * 100
+# perc_neg = reviews_neg.groupby(["lodging_id", "lodging_name"])['rating'].count() / df_merged.groupby(["lodging_id", "lodging_name"])['rating'].count() * 100
 
-df_grouped["avg_rating"] = df_grouped["avg_rating"].round(3)
-df_grouped["avg_sentiment"] = df_grouped["avg_sentiment"].round(3)
+# df_perc_pos = pd.DataFrame({'perc_pos': perc_pos})
+# df_perc_neg = pd.DataFrame({'perc_neg': perc_neg})
 
+# df_perc_pos = df_perc_pos.reset_index()
+# df_perc_neg = df_perc_neg.reset_index()
+
+# df_grouped = df_merged.groupby(["lodging_id", "lodging_name"]).agg(
+#     avg_rating=("rating", "mean"),
+#     avg_sentiment=("sentiment_score", "mean")
+# ).reset_index()
+
+# df_grouped = df_grouped.merge(df_perc_pos, on=["lodging_id", "lodging_name"]).merge(df_perc_neg, on=["lodging_id", "lodging_name"])
+
+# df_grouped["avg_rating"] = df_grouped["avg_rating"].round(3)
+# df_grouped["avg_sentiment"] = df_grouped["avg_sentiment"].round(3)
+# df_grouped["perc_pos"] = df_grouped["perc_pos"].round(3)
+# df_grouped["perc_neg"] = df_grouped["perc_neg"].round(3)
 
 # Hotels de competencia
 lista_id_NV = [811,855,851]
@@ -69,7 +118,9 @@ def map(df, zoom):
                     tooltip= f"""
                             <b>Nombre del Hotel:</b> {row['lodging_name']}<br>
                             <b>Rating Promedio:</b> {row['avg_rating']}<br>
-                            <b>Sentimiento Promedio:</b> {row['avg_sentiment']}""",  # tooltip para que muestre datos cuando se pose
+                            <b>Sentimiento Promedio:</b> {row['avg_sentiment']}<br>
+                            <b>% Positivas (Rating):</b> {row['perc_pos']}<br> 
+                            <b>% Negativas (Rating):</b> {row['perc_neg']}""",  # tooltip para que muestre datos cuando se pose
                     icon=folium.Icon(color='red', icon='info-sign')  # Cambia el color del icono a rojo
                 )
                 marcador.add_to(mc_selected)
@@ -80,7 +131,9 @@ def map(df, zoom):
                     tooltip = f"""
                             <b>Nombre del Hotel:</b> {row['lodging_name']}<br>
                             <b>Rating Promedio:</b> {row['avg_rating']}<br>
-                            <b>Sentimiento Promedio:</b> {row['avg_sentiment']}""" 
+                            <b>Sentimiento Promedio:</b> {row['avg_sentiment']}<br>
+                            <b>% Positivas (Rating):</b> {row['perc_pos']}<br> 
+                            <b>% Negativas (Rating):</b> {row['perc_neg']}""" 
                 )
                 marcador.add_to(mc_unselected)
 
