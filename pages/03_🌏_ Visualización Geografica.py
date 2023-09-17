@@ -10,6 +10,7 @@ from streamlit_folium import folium_static
 st.title('Visualización Geografica')
 st.markdown('***')
 st.sidebar.image("https://raw.githubusercontent.com/cristhianc001/hoteles_streamlit/main/img/icon.png",caption="Developed and Maintained by: Latam Data Consultores")
+st.info("Posa el cursor sobre el icono seleccionado y podrás obtener algunos indicadores del hotel.")
 
 ########### VARIABLES Y FUNCIONES
 @st.cache_data
@@ -49,7 +50,7 @@ def data_grouped(df, df1, df2):  # agrupar df para calcular promedio de rating y
     avg_rating=("rating", "mean"),
     avg_sentiment=("sentiment_score", "mean")
     ).reset_index()
-    
+
     df_grouped = df_grouped.merge(df1, on=["lodging_id", "lodging_name"]).merge(df2, on=["lodging_id", "lodging_name"])
     df_grouped["avg_rating"] = df_grouped["avg_rating"].round(3)
     df_grouped["avg_sentiment"] = df_grouped["avg_sentiment"].round(3)
@@ -165,6 +166,8 @@ df_filtrado = df_lodgings[df_lodgings['lodging_id'].isin(hoteles)]
 df = df_filtrado.merge(df_grouped, on=["lodging_id", "lodging_name"])
 
 map(df, 4)
+
+st.warning("El porcentaje de reviews positivas y negativas se calculó de acuerdo al rating. Se considera un rating mayor a 3 como positivo, un rating menor a 3 como negativo e igual a 3 como neutro.")
 
 css = '''
 <style>
