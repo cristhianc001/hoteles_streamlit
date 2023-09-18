@@ -4,9 +4,9 @@ st.title('Acerca de nosotros')
 st.sidebar.image("https://raw.githubusercontent.com/cristhianc001/hoteles_streamlit/main/img/icon.png",caption="Developed and Maintained by: Latam Data Consultores")
 
 @st.cache_resource
-def load_image():
-    return st.image('https://raw.githubusercontent.com/cristhianc001/hoteles_streamlit/main/img/team.png')
-load_image()
+def load_team():
+    return st.image('https://raw.githubusercontent.com/cristhianc001/hoteles_streamlit/main/img/team2.png')
+load_team()
 
 st.info("""
         ***Data Analyst***: [Douglas Sanchez](https://www.linkedin.com/in/douglassanchezcasanova/)
